@@ -34,7 +34,7 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - ${APPDATA}/qbittorrent/config:/config
-      - ${MEDIA_SHARE:?error}/torrents:/torrents #optional
+      - ${MEDIA_SHARE:?error}data/torrents:/torrents #optional
     ports:
       - 8080:8080
       - 6881:6881
