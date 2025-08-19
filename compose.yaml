@@ -115,7 +115,7 @@ services:
         min_speed: 10
         max_strikes: 10
       REMOVE_STALLED: True
-        max_strikes: 5
+        max_strikes: 10
       REMOVE_UNMONITORED: True
       SEARCH_BETTER: True
       SEARCH_MISSING: True
@@ -179,8 +179,8 @@ services:
         - base_url: "http://10.1.1.190:8080"
           username: "$QBIT_USERNAME" # (optional -> if not provided, assuming not needed)
           password: "$QBIT_PASSWORD" # (optional -> if not provided, assuming not needed)
-          name: "qBittorrent main" # (optional -> if not provided, assuming "qBittorrent". Must correspond with what is specified in your *arr as download client name)
+        #  name: "qBittorrent main" # (optional -> if not provided, assuming "qBittorrent". Must correspond with what is specified in your *arr as download client name)
  
     volumes:
       # - $DOCKERDIR/appdata/decluttarr/logs:/app/logs # Uncomment to get logs in text file, too      
-      # - $DATADIR/media:/media # If you use detect_deletions, add the identical mount paths that you use in your sonarr/radarr instances. This may be different to this example!
+      - ${MEDIA_SHARE:?error}/data:/data # If you use detect_deletions, add the identical mount paths that you use in your sonarr/radarr instances. This may be different to this example!
