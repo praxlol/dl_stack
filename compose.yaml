@@ -100,9 +100,9 @@ services:
       # # --- Optional: Job Defaults ---
       # You can use these to set those parameters across all jobs. If you don't specify it here, the defaults set by system will be used
       # If you set job-specific parameters (further down below), they will override these settings.
-      # max_strikes: 3
-      # MIN_DAYS_BETWEEN_SEARCHES: 7
-      # MAX_CONCURRENT_SEARCHES: 3
+       max_strikes: 10
+       MIN_DAYS_BETWEEN_SEARCHES: 14
+       MAX_CONCURRENT_SEARCHES: 6
 
       # # --- Jobs (short notation) ---
       # If you want to go with the most basic settings, you can just turn them all on:
