@@ -78,6 +78,8 @@ services:
     image: ghcr.io/manimatter/decluttarr:latest
     container_name: decluttarr
     restart: always
+    networks:
+      - qbit
     environment:
       TZ: ${TZ}
       PUID: ${PUID:?error}
