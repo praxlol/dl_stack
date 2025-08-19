@@ -103,8 +103,10 @@ services:
 
       # # --- Jobs (short notation) ---
       # If you want to go with the most basic settings, you can just turn them all on:
-      REMOVE_BAD_FILES: True
+      REMOVE_BAD_FILES: |
         keep_archives: True
+      # REMOVE_BAD_FILES:
+        # keep_archives: True
       REMOVE_FAILED_DOWNLOADS: True
       REMOVE_FAILED_IMPORTS: True
       REMOVE_METADATA_MISSING: True
