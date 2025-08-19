@@ -109,14 +109,14 @@ services:
         # keep_archives: True
       REMOVE_FAILED_DOWNLOADS: True
       REMOVE_FAILED_IMPORTS: True
-      REMOVE_METADATA_MISSING: True
+      REMOVE_METADATA_MISSING: |
         max_strikes: 3
       REMOVE_MISSING_FILES: True
       REMOVE_ORPHANS: True
-      REMOVE_SLOW: True
+      REMOVE_SLOW: |
         min_speed: 10
         max_strikes: 10
-      REMOVE_STALLED: True
+      REMOVE_STALLED: |
         max_strikes: 10
       REMOVE_UNMONITORED: True
       SEARCH_BETTER: True
