@@ -80,6 +80,7 @@ services:
     restart: always
     networks:
       - qbit
+      - starr
     environment:
       TZ: ${TZ}
       PUID: ${PUID:?error}
