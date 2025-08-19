@@ -158,7 +158,7 @@ services:
         - base_url: "http://10.1.1.190:8989"
           api_key: "$SONARR_API_KEY"
 
-       RADARR: >
+      RADARR: >
          - base_url: "http://10.1.1.190:7878"
           api_key: "$RADARR_API_KEY"
 
