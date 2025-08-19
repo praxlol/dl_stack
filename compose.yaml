@@ -82,13 +82,13 @@ services:
       - qbit
       - starr
     environment:
-      - TZ: ${TZ}
-      - PUID: ${PUID:?error}
-      - PGID: ${PGID:?error}
+      - TZ=${TZ}
+      - PUID=${PUID:?error}
+      - PGID=${PGID:?error}
 
-      - LOG_LEVEL: INFO
-      - TEST_RUN: True
-      - TIMER: 10
+      - LOG_LEVEL=INFO
+      - TEST_RUN=True
+      - TIMER=10
       # IGNORED_DOWNLOAD_CLIENTS: >
       #   - emulerr
       # SSL_VERIFICATION: true
@@ -100,9 +100,9 @@ services:
       # # --- Optional: Job Defaults ---
       # You can use these to set those parameters across all jobs. If you don't specify it here, the defaults set by system will be used
       # If you set job-specific parameters (further down below), they will override these settings.
-      - max_strikes: 10
-      - MIN_DAYS_BETWEEN_SEARCHES: 14
-      - MAX_CONCURRENT_SEARCHES: 6
+      - max_strikes=10
+      - MIN_DAYS_BETWEEN_SEARCHES=14
+      - MAX_CONCURRENT_SEARCHES=6
 
       # # --- Jobs (short notation) ---
       # If you want to go with the most basic settings, you can just turn them all on:
