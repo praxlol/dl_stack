@@ -167,18 +167,6 @@ services:
          - base_url: "http://10.1.1.190:7878"
           api_key: "$RADARR_API_KEY"
 
-      # READARR: >
-      #   - base_url: "http://readarr:8787"
-      #     api_key: "$READARR_API_KEY"
-
-      # LIDARR: >
-      #   - base_url: "http://lidarr:8686"
-      #     api_key: "$LIDARR_API_KEY"
-
-      # WHISPARR: >
-      #   - base_url: "http://whisparr:6969"
-      #     api_key: "$WHISPARR_API_KEY"
-
       # --- Download Clients ---
       QBITTORRENT: >
         - base_url: "http://10.1.1.190:8080"
