@@ -71,5 +71,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - 8191:8191
     networks:
       - qbit
