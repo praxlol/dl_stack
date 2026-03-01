@@ -66,19 +66,3 @@ services:
     networks:
         - qbit
         - dozzle
-
-  huntarr: #finds missing files 
-    image: huntarr/huntarr:latest
-    container_name: huntarr
-    hostname: huntarr
-    restart: unless-stopped
-    ports:
-      - "9705:9705"
-    volumes:
-      - ${APPDATA}/huntarr:/config
-    environment:
-      - TZ=${TZ}
-    networks:
-      - starr
-      - qbit
-      - dozzle
