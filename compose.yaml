@@ -66,7 +66,7 @@ services:
 
   flaresolverr:
     # DockerHub mirror flaresolverr/flaresolverr:latest
-    image: ghcr.io/flaresolverr/flaresolverr:latest
+    image: alexfozor/flaresolverr:pr-1300
     container_name: flaresolverr
     hostname: flaresolverr
     environment:
