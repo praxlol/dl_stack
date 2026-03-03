@@ -5,7 +5,7 @@ networks:
     external: true
   qbit:
     external: true
-  dozzle:
+  admin:
     external: true
 
 services:
@@ -25,7 +25,7 @@ services:
     networks:
       - starr
       - qbit
-      - dozzle
+      - admin
       
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:5.1.0
@@ -47,7 +47,7 @@ services:
     restart: unless-stopped
     networks:
         - qbit
-        - dozzle
+        - admin
 
   qui:
     image: ghcr.io/autobrr/qui:latest
@@ -62,7 +62,7 @@ services:
       - qbittorrent
     networks:
       - qbit
-      - dozzle
+      - admin
 
   flaresolverr:
     # DockerHub mirror flaresolverr/flaresolverr:latest
@@ -79,7 +79,7 @@ services:
     restart: unless-stopped
     networks:
       - qbit
-      - dozzle
+      - admin
       - starr
 
 #  byparr:
