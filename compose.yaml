@@ -59,8 +59,8 @@ services:
       - TZ=${TZ:?error}
     volumes:
       - ${APPDATA}/sabnzbd/config:/config
-      - /${MEDIA_SHARE1:?error}/usenet/incomplete/downloads:/incomplete-downloads #optional
-      - /${MEDIA_SHARE1:?error}/usenet/downloads:/downloads #optional
+      - ${MEDIA_SHARE1:?error}/data/usenet/incomplete/downloads:/incomplete-downloads #optional
+      - ${MEDIA_SHARE1:?error}/data/usenet/downloads:/downloads #optional
     ports:
       - 8081:8080
     restart: unless-stopped
