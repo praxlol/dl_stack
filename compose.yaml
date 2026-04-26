@@ -48,6 +48,26 @@ services:
     networks:
         - qbit
         - admin
+        
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    hostname: sabnzbd
+    environment:
+      - PUID=${PUID:?error}
+      - PGID=${PGID:?error}
+      - TZ=${TZ:?error}
+    volumes:
+      - ${APPDATA}/sabnzbd/config:/config
+      - /${MEDIA_SHARE1:?error}/usenet/incomplete/downloads:/incomplete-downloads #optional
+      - /${MEDIA_SHARE1:?error}/usenet/downloads:/downloads #optional
+    ports:
+      - 8081:8080
+    restart: unless-stopped
+    networks:
+        - qbit
+        - admin
+
 
   qui:
     image: ghcr.io/autobrr/qui:latest
