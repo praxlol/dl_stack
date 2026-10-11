@@ -1,5 +1,98 @@
 name: dl_stack
 
+x-common-env: &common-env
+  PUID: ${PUID:?set PUID in .env}
+  PGID: ${PGID:?set PGID in .env}
+  TZ: ${TZ:?set TZ in .env}
+
+x-service-defaults: &service-defaults
+  restart: unless-stopped
+  security_opt:
+    - no-new-privileges:true
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    hostname: prowlarr
+    <<: *service-defaults
+    environment: *common-env
+    volumes:
+      - ${APPDATA:?set APPDATA in .env}/prowlarr/config:/config
+    ports:
+      - 9696:9696
+    networks:
+      - starr
+      - qbit
+      
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:5.1.0
+    container_name: qbittorrent
+    hostname: qbittorrent
+    <<: *service-defaults
+    environment:
+      <<: *common-env
+      WEBUI_PORT: "8080"
+      TORRENTING_PORT: "6881"
+    volumes:
+      - ${APPDATA:?set APPDATA in .env}/qbittorrent/config:/config
+      - ${MEDIA_SHARE1:?set MEDIA_SHARE1 in .env}/data/torrents:/data/torrents
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    networks:
+        - qbit
+        
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    hostname: sabnzbd
+    <<: *service-defaults
+    environment: *common-env
+    volumes:
+      - ${APPDATA:?set APPDATA in .env}/sabnzbd/config:/config
+      - ${MEDIA_SHARE1:?set MEDIA_SHARE1 in .env}/data/usenet:/data/usenet
+    ports:
+      - 8081:8080
+    networks:
+        - qbit
+
+  qui:
+    image: ghcr.io/autobrr/qui:latest
+    container_name: qui
+    <<: *service-defaults    
+    ports:
+      - 7476:7476
+    volumes:
+      - ${APPDATA:?set APPDATA in .env}/qui/config:/config
+      - ${MEDIA_SHARE1:?set MEDIA_SHARE1 in .env}/data/torrents:/data/torrents
+    depends_on:
+      - qbittorrent
+    networks:
+      - qbit
+
+  flaresolverr:
+    # DockerHub mirror flaresolverr/flaresolverr:latest
+    image: alexfozor/flaresolverr:pr-1300
+    container_name: flaresolverr
+    hostname: flaresolverr
+    <<: *service-defaults
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ:?set TZ in .env}
+    ports:
+      - "${PORT:-8191}:8191"
+    networks:
+      - starr
+
 networks:
   starr:
     external: true
@@ -7,109 +100,3 @@ networks:
     external: true
   admin:
     external: true
-
-services:
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    hostname: prowlarr
-    environment:
-      - PUID=${PUID:?error}
-      - PGID=${PGID:?error}
-      - TZ=${TZ:?error}
-    volumes:
-      - ${APPDATA:?error}/prowlarr/config:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped 
-    networks:
-      - starr
-      - qbit
-      - admin
-      
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:5.1.0
-    container_name: qbittorrent
-    hostname: qbittorrent
-    environment:
-      - PUID=${PUID:?error}
-      - PGID=${PGID:?error}
-      - TZ=${TZ:?error}
-      - WEBUI_PORT=8080
-      - TORRENTING_PORT=6881
-    volumes:
-      - ${APPDATA}/qbittorrent/config:/config
-      - ${MEDIA_SHARE1:?error}/data/torrents:/data/torrents
-    ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
-    restart: unless-stopped
-    networks:
-        - qbit
-        - admin
-        
-  sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
-    container_name: sabnzbd
-    hostname: sabnzbd
-    environment:
-      - PUID=${PUID:?error}
-      - PGID=${PGID:?error}
-      - TZ=${TZ:?error}
-    volumes:
-      - ${APPDATA}/sabnzbd/config:/config
-      - ${MEDIA_SHARE1:?error}/data/usenet/incomplete:/data/usenet/incomplete #optional
-      - ${MEDIA_SHARE1:?error}/data/usenet/complete:/data/usenet/complete #optional
-    ports:
-      - 8081:8080
-    restart: unless-stopped
-    networks:
-        - qbit
-        - admin
-
-
-  qui:
-    image: ghcr.io/autobrr/qui:latest
-    container_name: qui
-    restart: unless-stopped
-    ports:
-      - 7476:7476
-    volumes:
-      - ${APPDATA:?error}/qui/config:/config
-      - ${MEDIA_SHARE1:?error}/data/torrents:/data/torrents
-    depends_on:
-      - qbittorrent
-    networks:
-      - qbit
-      - admin
-
-  flaresolverr:
-    # DockerHub mirror flaresolverr/flaresolverr:latest
-    image: alexfozor/flaresolverr:pr-1300
-    container_name: flaresolverr
-    hostname: flaresolverr
-    environment:
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - LOG_HTML=${LOG_HTML:-false}
-      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=${TZ:?error}
-    ports:
-      - "${PORT:-8191}:8191"
-    restart: unless-stopped
-    networks:
-      - qbit
-      - admin
-      - starr
-
-#  byparr:
-#    image: ghcr.io/thephaseless/byparr:latest
-#    restart: unless-stopped
-#    init: true
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    ports:
-#      - 8191:8191
-#    networks:
-#      - qbit
