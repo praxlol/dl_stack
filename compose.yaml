@@ -93,6 +93,30 @@ services:
     networks:
       - starr
 
+  dozzle-agent:
+    image: amir20/dozzle:latest
+    command: agent
+    environment:
+      DOZZLE_CERT_PEM: |
+        -----BEGIN CERTIFICATE-----
+        MIIBQDCB86ADAgECAhAbTfECi31nAUpGotGseqvDMAUGAytlcDARMQ8wDQYDVQQK
+        EwZEb3p6bGUwHhcNMjYxMDEzMDUzNTM1WhcNMzExMDEzMDYzNTM1WjARMQ8wDQYD
+        VQQKEwZEb3p6bGUwKjAFBgMrZXADIQDc5lPe7qxokq20J+PxWhZlI4XSEqnJdKw5
+        eRghWU4vbqNhMF8wDgYDVR0PAQH/BAQDAgKEMB0GA1UdJQQWMBQGCCsGAQUFBwMB
+        BggrBgEFBQcDAjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTZKD+lrHRW7jhq
+        2sjWhTVDGig+LDAFBgMrZXADQQBijD9JEazB6BCXXHwqHMmS0mWD2i1MHBykBAaP
+        gf2g6v/9bcgB5VijaY2A8A4tPyrirdQDm6Lx3CsJELXonB8O
+        -----END CERTIFICATE-----
+      DOZZLE_KEY_PEM: |
+        -----BEGIN PRIVATE KEY-----
+        MC4CAQAwBQYDK2VwBCIEIMMXD3GKPlvH4D4jovfnUSjIibIxVPQM3rm8Z+njBmyB
+        -----END PRIVATE KEY-----
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 7007:7007
+    <<: *service-defaults
+
 networks:
   starr:
     external: true
